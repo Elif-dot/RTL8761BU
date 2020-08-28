@@ -1,28 +1,40 @@
 The document describes how to install Realtek Bluetooth USB driver to Linux system.
 The supported kernel version is 2.6.32 - 5.7+
+1. Blacklisting conflicting kernel modules
+Add the following lines to a new .conf file in /etc/modprobe.d(example: /etc/modprobe.d/bt-blacklist.conf) 
 
-1. Install
+blacklist btrtl
+blacklist btusb
+blacklist btintel
+blacklist btbcm
+
+2. Install
    a. Build and install Realtek Bluetooth USB driver.
       Change to the driver package and execute the below command
       $ sudo make install
 
    If you encounter an error like "depmod: ERROR: Bad version passed /lib/modules/...",
    Please change the lines "depmod -a $(MDL_DIR)" to "depmod -a $(shell uname -r)"
-   Please make sure the "make" and "kernel-devel" packages are installed to avoid further issues (Needed for Fedora 32)
-   b. Insert Realtek rtl8761BU usb dongle
-      Check LMP subversion by the following command
-      $ hciconfig -a
+   Please make sure the "make" and "kernel-devel" packages are installed to avoid further issues
+   On Fedora 32, you will also need "bluez-hid2hci"
+   If you are using RPMFusion, you can install the "pulseaudio-module-bluetooth-freeworld" package for more codec support, although because it's conflicting with "pulseaudio-module-bluetooth", you will need to do it the following way: (to avoid removing you entire DE...)
+   In your terminal, type "sudo dnf shell"
+   In the shell, type "install pulseaudio-module-bluetooth-freeworld" and hit enter
+   Then type "remove pulseaudio-module-bluetooth" and hit enter
+   Then type "run" and hit enter
+   This will both remove the conflicting package and install the non-free one from RPMFusion, which will
+avoid you accidentally removing your DE
+   Then type "quit" to exit the dnf shell
+3. Reboot
+-------------------------------------------------------------------------------------------
+After following the instructions from above, the dongle should work perfectly, although feel free to read the extra documentation(which shouldn't be needed)
 
-   Now Realtek chip can be recognized and bluetooth function can work.
-
-
-2. Uninstall
+4. Uninstalling the driver
    a. Unplug Realtek rtl8761BU usb dongle.
    b. Change to the driver package location and run
       $ sudo make uninstall
 
-
-3. Install BlueZ (optional)
+5. Install BlueZ (optional)
 
 New versions of BlueZ can be downloaded from http://www.bluez.org/
 
