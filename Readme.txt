@@ -9,7 +9,7 @@ blacklist btintel
 blacklist btbcm
 
 2. Prerequisites
-      
+   Make sure the folder with the driver is in ~/Downloads 
    Make sure the "make" and "kernel-devel" packages are installed to avoid further issues
    On Fedora 32, you will also need "bluez-hid2hci"
    If you are using RPMFusion, you can install the "pulseaudio-module-bluetooth-freeworld" package for more codec support, 
